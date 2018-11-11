@@ -84,7 +84,7 @@ export const updateContractSuccess = (contract: Contract): UpdateContractSuccess
   }
 });
 
-export const initialState = { user: { name: '--', surname: '--' }, amountInUsd: '--', currency: '--', date: '--' };
+export const initialState = { user: { name: '', surname: '' }, amountInUsd: '', currency: '', date: '' };
 
 // reducer
 export default (state: CurrentContract = initialState, action: SuccessAction | SelectContract | DeleteContract): Contract | {} => {
@@ -96,7 +96,7 @@ export default (state: CurrentContract = initialState, action: SuccessAction | S
       return (action as SelectContract).payload.contract;
     case DELETE_CONTRACT:
       if ((state as Contract).id === (action as DeleteContract).payload.id) {
-        return {};
+        return initialState;
       }
       return state;
     default:
