@@ -2,7 +2,7 @@
 
 This project is created through creat-react-app. The solution is based on React/Redux, written in TypeScript.
 
-## Dependencies
+### Dependencies
 
 * `React` - view
 * `Redux` - state management
@@ -11,7 +11,7 @@ This project is created through creat-react-app. The solution is based on React/
 * `react-bootstrap` layout and components
 * `jest` `enzyme`  - unit test libraries
 
-## Structure
+### Structure
 
 All source files are located inside the `src` folder. Unit test files are end up with a `.test.tsx` suffix.
 
@@ -29,7 +29,7 @@ All source files are located inside the `src` folder. Unit test files are end up
   package.json
 ```
 
-## Available scripts
+### Available scripts
 
 `npm start`
 
@@ -43,3 +43,7 @@ Launches the test runner in the interactive watch mode. Run unit tests.
 `npm build`
 
 Builds the app for production to the build folder.
+
+### TODO
+- Add JSON server
+- Add unit tests
