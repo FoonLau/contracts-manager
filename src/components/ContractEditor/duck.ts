@@ -24,13 +24,6 @@ export type UPDATE_CONTRACT = typeof UPDATE_CONTRACT;
 export const UPDATE_CONTRACT_SUCCESS = `${prefix}UPDATE_CONTRACT_SUCCESS`;
 export type UPDATE_CONTRACT_SUCCESS = typeof UPDATE_CONTRACT_SUCCESS;
 
-// action types
-// export interface CreateContract {
-//   type: CREATE_CONTRACT;
-//   payload: {
-//     contract: Contract;
-//   };
-// }
 export interface CreateContractSuccess {
   type: CREATE_CONTRACT_SUCCESS;
   payload: {
@@ -38,12 +31,6 @@ export interface CreateContractSuccess {
   };
 }
 
-export interface UpdateContract {
-  type: UPDATE_CONTRACT;
-  payload: {
-    contract: Contract;
-  };
-}
 export interface UpdateContractSuccess {
   type: UPDATE_CONTRACT_SUCCESS;
   payload: {
@@ -71,12 +58,15 @@ export const createContractSuccess = (contract: Contract): CreateContractSuccess
   }
 });
 
-export const updateContract = (contract: Contract): UpdateContract => ({
-  type: UPDATE_CONTRACT,
-  payload: {
-    contract
-  }
-});
+export const updateContract = (contract: Contract) => (dispatch: Dispatch<CreateContractSuccess>) => {
+  dispatch({
+    type: UPDATE_CONTRACT_SUCCESS,
+    payload: {
+      contract
+    }
+  });
+};
+
 export const updateContractSuccess = (contract: Contract): UpdateContractSuccess => ({
   type: UPDATE_CONTRACT_SUCCESS,
   payload: {

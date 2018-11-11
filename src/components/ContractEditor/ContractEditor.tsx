@@ -15,14 +15,13 @@ import {
 import Form from '../Form/Form';
 import { 
   createContract,
-  updateContract,
-  UpdateContract
+  updateContract
 } from './duck';
 
 export interface Props {
   contract: CurrentContract;
   createContract: ActionCreator<ThunkAction<any, any, any, any>>;
-  updateContract: (contract: Contract) => UpdateContract;
+  updateContract: ActionCreator<ThunkAction<any, any, any, any>>;
 }
 
 export interface FormData {
@@ -51,20 +50,17 @@ export class ContractEditor extends React.Component<Props, object> {
       return ({ ...field, value: contract[field.name] });
     });
 
-    return <Form fields={fields} onSubmit={this.handleSubmit} />;
+    return <Form id={(contract as Contract).id} fields={fields} onSubmit={this.handleSubmit} />;
   }
 
-  private handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>): void => {
-    event.preventDefault();
-    event.stopPropagation();
-    const data = new FormData(event.currentTarget);
+  private handleSubmit = ({ name, surname, amountInUsd, currency, date }: FormData): void => {
     const { contract } = this.props;
     const updatedContract = {
       id: (contract as Contract).id,
-      user: { name: data.get('name'), surname: data.get('surname') },
-      amountInUsd: data.get('amountInUsd'),
-      currency: data.get('currency'),
-      date: data.get('date')
+      user: { name, surname },
+      amountInUsd,
+      currency,
+      date
     };
 
     if ((contract as Contract).id) {

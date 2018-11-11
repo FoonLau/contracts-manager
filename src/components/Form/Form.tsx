@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
+import { findIndex } from 'lodash';
 import Field from './Field/Field';
 
 export interface Field {
@@ -18,14 +19,39 @@ export interface FormData {
 }
 
 export interface Props {
+  id?: string;
   fields: Field[];
-  onSubmit: (event: React.FormEvent) => void;
+  onSubmit: (data: any) => void;
 }
 
+export interface State {
+  id?: string;
+  fields: Field[];
+}
 
-const Form: React.StatelessComponent<Props> = ({ fields, onSubmit }) => {
-  return (
-    <form onSubmit={onSubmit}>
+export default class Form extends React.Component<Props, State> {
+  public static getDerivedStateFromProps(nextProps: Props, prevState: State){
+    if(nextProps.id !== prevState.id){
+      return { 
+        id: nextProps.id,
+        fields: nextProps.fields
+      };
+    }
+
+    return null;
+ }
+
+  constructor(props: Props) {
+    super(props);
+    const { id, fields } = props;
+    this.state = { id, fields };
+  }
+
+  public render() {
+    const { fields } = this.state;
+
+    return (
+      <form onSubmit={ this.handleSubmit } onChange={ this.handleChange }>
         {
           fields.map(({ name, type, label, value }) => (
             <Field key={name} name={name} type={type} label={label} value={value} />
@@ -38,7 +64,35 @@ const Form: React.StatelessComponent<Props> = ({ fields, onSubmit }) => {
             type="submit">Save</Button>
         </div>
       </form>
-  );
-}
+    );
+  }
 
-export default Form;
+  private handleChange = (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+    const { name, value } = (event.target as HTMLInputElement);
+    const { fields } = this.state;
+    const index = findIndex(fields, { name });
+    const changedField = fields[index];
+
+    this.setState({
+      fields: fields.map((field, i) => {
+        if (i === index) {
+          return { ...changedField, value };
+        }
+        return field;
+      })
+    });
+  };
+
+  private handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    event.stopPropagation();
+
+    const { fields } = this.state;
+    this.props.onSubmit(fields.reduce((acc, field) => {
+      acc[field.name] = field.value;
+      return acc;
+    }, {}));
+  };
+}
