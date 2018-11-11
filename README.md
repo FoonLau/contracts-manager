@@ -8,7 +8,6 @@ This project is created through creat-react-app. The solution is based on React/
 * `Redux` - state management
 * `create-react-app` - build tool
 * `redux-thunk` - handle side-effects
-* `redux-forms` - form components
 * `react-bootstrap` layout and components
 * `jest` `enzyme`  - unit test libraries
 

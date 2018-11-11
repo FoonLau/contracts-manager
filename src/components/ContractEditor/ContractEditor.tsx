@@ -54,18 +54,21 @@ export class ContractEditor extends React.Component<Props, object> {
     return <Form fields={fields} onSubmit={this.handleSubmit} />;
   }
 
-  private handleSubmit = ({ name, surname, amountInUsd, currency, date }: FormData): void => {
+  private handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>): void => {
+    event.preventDefault();
+    event.stopPropagation();
+    const data = new FormData(event.currentTarget);
     const { contract } = this.props;
     const updatedContract = {
       id: (contract as Contract).id,
-      user: { name, surname },
-      amountInUsd,
-      currency,
-      date
+      user: { name: data.get('name'), surname: data.get('surname') },
+      amountInUsd: data.get('amountInUsd'),
+      currency: data.get('currency'),
+      date: data.get('date')
     };
 
     if ((contract as Contract).id) {
-      this.props.updateContract(updatedContract);
+      this.props.updateContract((contract as Contract));
     } else {
       this.props.createContract(updatedContract);
     }
