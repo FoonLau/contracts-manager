@@ -1,0 +1,14 @@
+.field {
+  margin-bottom: 15px;
+}
+
+.field-input {
+  width: 100%;
+  border: 1px solid #d4d4d4;
+  border-radius: 3px;
+  height: 30px;
+}
+
+.field-error {
+  color: #ab7277;
+}
