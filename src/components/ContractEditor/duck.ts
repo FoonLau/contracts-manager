@@ -1,7 +1,6 @@
 import { Dispatch } from 'redux';
 import { 
-  Contract,
-  CurrentContract
+  Contract
 } from '../../types/index';
 import {  
   SELECT_CONTRACT,
@@ -12,17 +11,24 @@ import {
 
 // action constants
 const prefix = 'app/editor/';
-export const CREATE_CONTRACT = `${prefix}CREATE_CONTRACT`;
-export type CREATE_CONTRACT = typeof CREATE_CONTRACT;
+export const EDIT_CONTRACT = `${prefix}EDIT_CONTRACT`;
+export type EDIT_CONTRACT = typeof EDIT_CONTRACT;
 
 export const CREATE_CONTRACT_SUCCESS = `${prefix}CREATE_CONTRACT_SUCCESS`;
 export type CREATE_CONTRACT_SUCCESS = typeof CREATE_CONTRACT_SUCCESS;
 
-export const UPDATE_CONTRACT = `${prefix}UPDATE_CONTRACT`;
-export type UPDATE_CONTRACT = typeof UPDATE_CONTRACT;
-
 export const UPDATE_CONTRACT_SUCCESS = `${prefix}UPDATE_CONTRACT_SUCCESS`;
 export type UPDATE_CONTRACT_SUCCESS = typeof UPDATE_CONTRACT_SUCCESS;
+
+export interface EditContract {
+  type: EDIT_CONTRACT;
+  payload: {
+    data: {
+      name: string;
+      value: string;
+    }
+  };
+}
 
 export interface CreateContractSuccess {
   type: CREATE_CONTRACT_SUCCESS;
@@ -41,6 +47,13 @@ export interface UpdateContractSuccess {
 export type SuccessAction = CreateContractSuccess | UpdateContractSuccess;
 
 // action creators
+export const editContract = (data: { name: string; value: string; }) => ({
+  type: EDIT_CONTRACT,
+  payload: {
+    data
+  }
+});
+
 export const createContract = (contract: Contract) => (dispatch: Dispatch<CreateContractSuccess>) => {
   const data = { ...contract, id: new Date().getTime().toString() };
 
@@ -77,8 +90,15 @@ export const updateContractSuccess = (contract: Contract): UpdateContractSuccess
 export const initialState = { user: { name: '', surname: '' }, amountInUsd: '', currency: '', date: '' };
 
 // reducer
-export default (state: CurrentContract = initialState, action: SuccessAction | SelectContract | DeleteContract): Contract | {} => {
+export default (state: Contract = initialState, action: SuccessAction | SelectContract | DeleteContract | EditContract): Contract | {} => {
   switch(action.type) {
+    case EDIT_CONTRACT:
+      const { name, value } = (action as EditContract).payload.data;
+      if (name === 'name' || name === 'surname') {
+        const { user } = state;
+        return { ...state, user: { ...user, [ name ]: value }};
+      }
+      return { ...state, [ name ]: value };
     case CREATE_CONTRACT_SUCCESS:
     case UPDATE_CONTRACT_SUCCESS:
       return initialState;

@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Button } from 'react-bootstrap';
-import { findIndex } from 'lodash';
 import Field from './Field/Field';
 
 export interface Field {
@@ -19,36 +18,14 @@ export interface FormData {
 }
 
 export interface Props {
-  id?: string;
   fields: Field[];
-  onSubmit: (data: any) => void;
+  onSubmit: () => void;
+  onChange: (data: any) => void;
 }
 
-export interface State {
-  id?: string;
-  fields: Field[];
-}
-
-export default class Form extends React.Component<Props, State> {
-  public static getDerivedStateFromProps(nextProps: Props, prevState: State){
-    if(nextProps.id !== prevState.id){
-      return { 
-        id: nextProps.id,
-        fields: nextProps.fields
-      };
-    }
-
-    return null;
- }
-
-  constructor(props: Props) {
-    super(props);
-    const { id, fields } = props;
-    this.state = { id, fields };
-  }
-
+export default class Form extends React.Component<Props, object> {
   public render() {
-    const { fields } = this.state;
+    const { fields } = this.props;
 
     return (
       <form onSubmit={ this.handleSubmit } onChange={ this.handleChange }>
@@ -71,28 +48,14 @@ export default class Form extends React.Component<Props, State> {
     event.preventDefault();
     event.stopPropagation();
     const { name, value } = (event.target as HTMLInputElement);
-    const { fields } = this.state;
-    const index = findIndex(fields, { name });
-    const changedField = fields[index];
-
-    this.setState({
-      fields: fields.map((field, i) => {
-        if (i === index) {
-          return { ...changedField, value };
-        }
-        return field;
-      })
-    });
+    
+    this.props.onChange({ name, value });
   };
 
   private handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
 
-    const { fields } = this.state;
-    this.props.onSubmit(fields.reduce((acc, field) => {
-      acc[field.name] = field.value;
-      return acc;
-    }, {}));
+    this.props.onSubmit();
   };
 }

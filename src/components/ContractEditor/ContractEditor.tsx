@@ -15,13 +15,15 @@ import {
 import Form from '../Form/Form';
 import { 
   createContract,
-  updateContract
+  updateContract,
+  editContract
 } from './duck';
 
 export interface Props {
   contract: CurrentContract;
   createContract: ActionCreator<ThunkAction<any, any, any, any>>;
   updateContract: ActionCreator<ThunkAction<any, any, any, any>>;
+  editContract: ActionCreator<Action>;
 }
 
 export interface FormData {
@@ -50,23 +52,20 @@ export class ContractEditor extends React.Component<Props, object> {
       return ({ ...field, value: contract[field.name] });
     });
 
-    return <Form id={(contract as Contract).id} fields={fields} onSubmit={this.handleSubmit} />;
+    return <Form fields={fields} onChange={this.handleChange} onSubmit={this.handleSubmit} />;
   }
 
-  private handleSubmit = ({ name, surname, amountInUsd, currency, date }: FormData): void => {
+  private handleChange = (data: { name: string; value: string; }): void => {
+    this.props.editContract(data);
+  };
+
+  private handleSubmit = (): void => {
     const { contract } = this.props;
-    const updatedContract = {
-      id: (contract as Contract).id,
-      user: { name, surname },
-      amountInUsd,
-      currency,
-      date
-    };
 
     if ((contract as Contract).id) {
       this.props.updateContract((contract as Contract));
     } else {
-      this.props.createContract(updatedContract);
+      this.props.createContract(contract);
     }
   }
 }
@@ -75,7 +74,8 @@ export const mapStateToProps = (state: StoreState) => ({ contract: state.current
 
 export const mapDispatchToProps = (dispatch: Dispatch<Action>) => bindActionCreators({
   createContract,
-  updateContract
+  updateContract,
+  editContract
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContractEditor);
