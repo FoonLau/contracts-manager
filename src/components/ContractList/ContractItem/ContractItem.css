@@ -1,0 +1,9 @@
+.contract-item {
+  height: 30px;
+  border-bottom: 1px solid gray;
+  cursor: pointer;
+}
+
+.contract-item.selected {
+  background: orange;
+}

@@ -14,6 +14,7 @@ import {
   selectContract,
   deleteContract
 } from '../duck'
+import './ContractItem.css'
 
 export interface Props extends Contract {
   selectedId: string;
