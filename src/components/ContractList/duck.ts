@@ -48,8 +48,16 @@ export const selectContract = (contract: Contract) => ({
 export default (state: Contracts = [], action: SuccessAction | DeleteContract): Contract[] => {
   switch(action.type) {
     case CREATE_CONTRACT_SUCCESS:
-    case UPDATE_CONTRACT_SUCCESS:
       return [ ...state, (action as SuccessAction).payload.contract ];
+    case UPDATE_CONTRACT_SUCCESS:
+      const { contract: updatedContract } = (action as SuccessAction).payload;
+      return (state as []).map(( contract: Contract ) => {
+        if (contract.id === updatedContract.id) {
+          return updatedContract;
+        }
+
+        return contract;
+      });
     case DELETE_CONTRACT:
       return [ ...(state as []).filter(
           ({ id }: Contract) => id !== (action as DeleteContract).payload.id

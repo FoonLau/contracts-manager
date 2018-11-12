@@ -64,14 +64,8 @@ export const createContract = (contract: Contract) => (dispatch: Dispatch<Create
     }
   });
 };
-export const createContractSuccess = (contract: Contract): CreateContractSuccess => ({
-  type: CREATE_CONTRACT_SUCCESS,
-  payload: {
-    contract
-  }
-});
 
-export const updateContract = (contract: Contract) => (dispatch: Dispatch<CreateContractSuccess>) => {
+export const updateContract = (contract: Contract) => (dispatch: Dispatch<UpdateContractSuccess>) => {
   dispatch({
     type: UPDATE_CONTRACT_SUCCESS,
     payload: {
@@ -79,13 +73,6 @@ export const updateContract = (contract: Contract) => (dispatch: Dispatch<Create
     }
   });
 };
-
-export const updateContractSuccess = (contract: Contract): UpdateContractSuccess => ({
-  type: UPDATE_CONTRACT_SUCCESS,
-  payload: {
-    contract
-  }
-});
 
 export const initialState = { user: { name: '', surname: '' }, amountInUsd: '', currency: '', date: '' };
 
