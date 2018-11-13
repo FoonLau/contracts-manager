@@ -43,7 +43,11 @@ export class ContractItem extends React.Component<Props, object> {
   private select = (e: React.MouseEvent) => {
     e.stopPropagation();
     const { selectedId, ...contract } = this.props;
-    this.props.selectContract(contract);
+    if (selectedId === contract.id) {
+      this.props.selectContract(null);
+    } else {
+      this.props.selectContract(contract);
+    }
   };
 
   private delete = (e: React.MouseEvent) => {

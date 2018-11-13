@@ -90,7 +90,11 @@ export default (state: Contract = initialState, action: SuccessAction | SelectCo
     case UPDATE_CONTRACT_SUCCESS:
       return initialState;
     case SELECT_CONTRACT:
-      return (action as SelectContract).payload.contract;
+      const contract = (action as SelectContract).payload.contract;
+      if (contract) {
+        return contract;
+      }
+      return initialState;
     case DELETE_CONTRACT:
       if ((state as Contract).id === (action as DeleteContract).payload.id) {
         return initialState;
