@@ -1,0 +1,22 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render correctly 1`] = `
+<div
+  className="field"
+>
+  <label
+    className="field-label"
+  >
+    name
+  </label>
+  <div>
+    <input
+      className="field-input"
+      name="name"
+      placeholder="name"
+      type="text"
+      value="John"
+    />
+  </div>
+</div>
+`;
