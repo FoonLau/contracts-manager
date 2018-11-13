@@ -19,8 +19,8 @@ export interface FormData {
 
 export interface Props {
   fields: Field[];
-  onSubmit: () => void;
-  onChange: (data: any) => void;
+  onSubmit?: () => void;
+  onChange?: (data: any) => void;
 }
 
 export default class Form extends React.Component<Props, object> {
@@ -49,13 +49,17 @@ export default class Form extends React.Component<Props, object> {
     event.stopPropagation();
     const { name, value } = (event.target as HTMLInputElement);
     
-    this.props.onChange({ name, value });
+    if (this.props.onChange) {
+      this.props.onChange({ name, value });
+    }
   };
 
   private handleSubmit = (event: React.SyntheticEvent<HTMLFormElement>) => {
     event.preventDefault();
     event.stopPropagation();
 
-    this.props.onSubmit();
+    if (this.props.onSubmit) {
+      this.props.onSubmit();
+    }
   };
 }
